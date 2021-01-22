@@ -20,7 +20,6 @@ def create_token(payload, timeout=1):
         'alg': 'HS256'
     }
     payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=timeout)
-    print(payload)
 
     token = jwt.encode(payload=payload, key=salt, headers=headers)
     return token
@@ -28,7 +27,9 @@ def create_token(payload, timeout=1):
 
 def valid_token(request):
     try:
-        token = request.form['token']
+        import json
+        body = json.loads(request.get_data(as_text=True))
+        token = body['token']
 
     except BaseException:
         return {

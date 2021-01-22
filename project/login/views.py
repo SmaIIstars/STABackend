@@ -25,11 +25,11 @@ class UserView(Resource):
 
         data = marshal(user_object, UserView.user_fields)
         from ..utils.token import create_token
-        token = create_token({'data': data}, 1)
-
+        token = create_token({'data': data}, 60)
+        data['token'] = token
         return {
             'code': 1001,
-            'token': token,
+            'data': data,
             'message': 'login successful'
         }
 
