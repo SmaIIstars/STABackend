@@ -2,9 +2,10 @@ from flask import Flask
 
 
 def routes(app):
-    from . import login, personnel
+    from . import login, personnel, emailCatpcha
     login.init_app(app)
     personnel.init_app(app)
+    emailCatpcha.init_app(app)
 
 
 def create_app():

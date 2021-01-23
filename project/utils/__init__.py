@@ -13,3 +13,10 @@ custom_status_code = {
     1002: 'valid token successful',
     1003: 'valid token failed'
 }
+
+from_email = {
+    "user": 'smallstars.he@qq.com',
+    "password": 'cjfoeqsqkylbbfgi',
+    "host": 'smtp.qq.com'
+}
+
