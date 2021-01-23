@@ -31,13 +31,10 @@ def routes(app):
         subject = ['CDUT STA 验证码']
         contents = generate_contents(username, captcha)
         hash_value = hashlib.sha512((str(time_stamp)+captcha).encode('utf-8'))
-        # yag.send(user_email, subject, contents)
-        print(hash_value.hexdigest())
-        print((str(time_stamp)+captcha))
-
+        yag.send(user_email, subject, contents)
         return {
             "time": time_stamp,
-            "code": hash_value.hexdigest()
+            "captcha": hash_value.hexdigest()
         }
 
 
