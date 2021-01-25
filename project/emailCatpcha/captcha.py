@@ -31,7 +31,9 @@ def routes(app):
         subject = ['CDUT STA 验证码']
         contents = generate_contents(username, captcha)
         hash_value = hashlib.sha512((str(time_stamp)+captcha).encode('utf-8'))
-        yag.send(user_email, subject, contents)
+
+        # yag.send(user_email, subject, contents)
+        print("[captcha.py 36 line] captcha: {}".format(captcha))
         return {
             "time": time_stamp,
             "captcha": hash_value.hexdigest()
@@ -46,32 +48,36 @@ def generate_captcha(size):
 
 
 def generate_contents(username, code):
-    return '''
-        <table style="width: 99.8%; height: 95%;">
-            <tbody>
-                <tr>
-                    <td id="QQMAILSTATIONERY" style="background:url(https://rescdn.qqmail.com/bizmail/zh_CN/htmledition/images/xinzhi/bg/a_02.jpg) no-repeat #fffaf6; min-height:550px; padding:100px 55px 200px 100px; ">
-                    <div style="text-align: center;"><font>{},您好！&nbsp;</font></div>
-                    <div style="text-align: center;"><font><br>
-                        </font>
-                    </div>
-                    <div style="text-align: center;"><font>您的 JunJun.Tec 验证码/临时登录密码 为&nbsp;</font></div>
-                    <div style="text-align: center;"><font><br>
-                        </font>
-                    </div>
-                    <div style="text-align: center;"><font color="#ff0000"><b><u>{}</u></b></font></div>
-                    <div style="text-align: center;"><font><br>
-                        </font>
-                    </div>
-                    <div style="text-align: center;"><font>如非您本人操作无需理会。&nbsp;</font></div>
-                    <div style="text-align: center;"><font><br>
-                        </font>
-                    </div>
-                    <div style="text-align: center;"><font>感谢支持。</font></div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div><includetail><!--<![endif]--></includetail></div>
-        '''.format(username, code)
+    return ['''
+<table width="600" cellspacing="0" border="0" align="center" style="border: rgba(0, 0, 0, 0.3) 1px solid">
+  <tbody style="align-items: center">
+    <tr style=" height: 64px; background-color: #415a94; color: #fff;">
+      <td style="text-align: center; font-size: 21px;">CDUT STA</td>
+    </tr>
+
+    <tr>
+      <td style=" display: table-cell; padding: 8% 0; color: #000; text-align: center; font-size: 21px; ">
+        邮箱验证码
+      </td>
+    </tr>
+
+    <tr>
+      <td style="display: table-cell; padding: 0 6%; color: #333">
+        尊敬的 {} , 您好！
+      </td>
+    </tr>
+
+    <tr>
+      <td style="display: table-cell; padding: 2% 6% 10% 6%; color: #333">
+          您的验证码是: <span style="font-weight: 600; color: red">{}</span> ,请在 5 分钟内进行验证。如果该验证码不为您本人申请,请无视。
+      </td>
+    </tr>
+
+    <tr>
+      <td style="background: #f7f7f7; display: table-cell; padding: 2% 6%">
+        <a href="https://www.baidu.com" style="color: #929292">返回</a>
+      </td>
+    </tr>
+  </tbody>
+</table>'''.format(username, code).replace('\n', '')]
 
