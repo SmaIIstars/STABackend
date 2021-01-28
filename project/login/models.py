@@ -11,10 +11,17 @@ from project.db import db
 
 
 class User(db.Model):
-    __tablename__ = 'user'
-    username = db.Column(db.String(255), primary_key=True)
+    email = db.Column(db.String(255), primary_key=True)
+    username = db.Column(db.String(255))
     upassword = db.Column(db.String(255))
     uauthority = db.Column(db.Integer)
+
+    def __init__(self, username, password, email, authority):
+        self.email = email
+        self.username = username
+        self.upassword = password
+        self.uauthority = authority
+
 
 
 

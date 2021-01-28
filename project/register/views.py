@@ -8,18 +8,25 @@
 # @file: views.py
 # @time: 2021/1/24 17:22
 from flask_restful import Resource, fields
-import json
 from flask import request
-from ..utils.skills import format_print
+from ..login.models import User
+from ..db import db
 
 
 class RegisterView(Resource):
     def post(self):
-        # data = json.loads(request.get_data(as_text=True))
-        data1 = format_print('get_data', request.get_data(as_text=True))
-        data2 = format_print('json', request.json)
-        print(type(data1))
-        print(type(data2))
+        data = request.json
+        [username, password, email] = data
+        user = User(username, password, email, 0)
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except Exception as err:
+            return {
+                'code': 1004,
+                'message': '该邮箱已经注册!'
+            }
+
         return {
             'message': 'successful'
         }

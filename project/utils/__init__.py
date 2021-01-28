@@ -11,7 +11,8 @@ custom_status_code = {
     1000: 'username or password error',
     1001: 'login successful',
     1002: 'valid token successful',
-    1003: 'valid token failed'
+    1003: 'valid token failed',
+    1004: 'email is registered'
 }
 
 from_email = {

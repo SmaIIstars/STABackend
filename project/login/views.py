@@ -6,26 +6,26 @@ import json
 
 class UserView(Resource):
     user_fields = {
-        'name': fields.String(attribute='username'),
         'authority': fields.String(attribute='uauthority'),
+        'username': fields.String(attribute='username')
     }
 
     def post(self):
         # raw | form-data
         data = json.loads(request.get_data(as_text=True))
-        name = data['username']
+        email = data['email']
         pwd = data['password']
 
-        user_object = User.query.filter_by(username=name, upassword=pwd).first()
+        user_object = User.query.filter_by(email=email, upassword=pwd).first()
         if not user_object:
             return {
                 'code': 1000,
-                'message': 'Username or password error'
+                'message': 'Email or password error'
             }
 
         data = marshal(user_object, UserView.user_fields)
         from ..utils.token import create_token
-        token = create_token({'data': data}, 60)
+        token = create_token({'data': data}, 60*24*7)
         data['token'] = token
         return {
             'code': 1001,
