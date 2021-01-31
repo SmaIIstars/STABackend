@@ -7,3 +7,10 @@
 # @software: PyCharm
 # @file: __init__.py.py
 # @time: 2021/1/28 21:21
+def init_app(app):
+    from . import files
+    files.routes(app)
+
+
+
+
