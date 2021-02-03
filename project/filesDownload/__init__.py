@@ -6,11 +6,12 @@
 # @site: 
 # @software: PyCharm
 # @file: __init__.py.py
-# @time: 2021/1/28 21:21
-def init_app(app):
-    from . import upload
-    upload.routes(app)
+# @time: 2021/2/3 23:29
 
+
+def init_app(app):
+    from . import download
+    download.routes(app)
 
 
 

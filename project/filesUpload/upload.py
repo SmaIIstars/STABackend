@@ -17,6 +17,7 @@ def routes(app):
         print(request.form)
         # print(request.headers)
         return {
-            'message': 'successful'
+            'message': 'successful',
+            'status': '1000'
         }
 
