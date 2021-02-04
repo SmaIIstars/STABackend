@@ -7,15 +7,27 @@
 # @software: PyCharm
 # @file: download.py
 # @time: 2021/2/3 23:29
-from flask import request
+from flask import request, send_from_directory
 
 
 def routes(app):
     @app.route('/files/download', methods=['get'])
     def files_download():
-        print(request.args)
+        filename = request.args.get('fileName')
 
-        return {
-            'message': 'successful',
-            'status': '1000'
-        }
+        try:
+            return send_from_directory('E:/Code/Python/STABackend/project/utils/excelTemplate', filename)
+
+        except Exception as e:
+            return {
+                'message': str(e),
+                'status': '1001'
+            }
+        # return {
+        #     'message': 'successful',
+        #     'status': '1001'
+        # }
+
+
+
+
