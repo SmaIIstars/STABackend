@@ -8,6 +8,7 @@
 # @file: download.py
 # @time: 2021/2/3 23:29
 from flask import request, send_from_directory
+from . import excel_template_path
 
 
 def routes(app):
@@ -16,17 +17,12 @@ def routes(app):
         filename = request.args.get('fileName')
 
         try:
-            return send_from_directory('E:/Code/Python/STABackend/project/utils/excelTemplate', filename)
-
+            return send_from_directory(excel_template_path, filename+'.xlsx')
         except Exception as e:
             return {
                 'message': str(e),
-                'status': '1001'
+                'status': 1005
             }
-        # return {
-        #     'message': 'successful',
-        #     'status': '1001'
-        # }
 
 
 
