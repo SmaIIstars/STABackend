@@ -8,14 +8,32 @@
 # @file: files.py
 # @time: 2021/1/30 19:48
 from flask import request
+import xlrd
+from ..utils.skills import switch, get_root_path
+import time
 
 
 def routes(app):
-    @app.route('/files/upload', methods=['POST'])
-    def files_upload():
-        print(request.files)
-        print(request.form)
-        # print(request.headers)
+    @app.route('/files/upload/<type_name>', methods=['POST'])
+    def files_upload(type_name):
+        file = request.files.get('file')
+        root_path = get_root_path()
+
+        def case_import():
+            file_path = root_path + '/files/import/'
+            file_name = str(int(time.time()))
+            file_type = '.xlsx'
+            file.save(file_path + file_name + file_type)
+
+        def case_cover():
+            path = root_path+'/files/cover'
+
+        switcher = {
+            'import': case_import,
+            'cover': case_cover
+        }
+        switch(switcher, type_name)
+
         return {
             'message': 'successful',
             'status': '1000'

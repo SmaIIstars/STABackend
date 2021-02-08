@@ -24,3 +24,12 @@ def get_current_path(file_name):
 
 def path_format(path):
     return path.replace('\\', '/')
+
+
+def switch(switcher, case, default=None):
+    c = switcher.get(case, default)
+    if str(type(c)) == "<class 'function'>":
+        return c()
+    return c
+
+
