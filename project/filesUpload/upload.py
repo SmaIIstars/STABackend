@@ -23,7 +23,9 @@ def routes(app):
             file_path = root_path + '/files/import/'
             file_name = str(int(time.time()))
             file_type = '.xlsx'
-            file.save(file_path + file_name + file_type)
+            # file.save(file_path + file_name + file_type)
+            excel = xlrd.open_workbook(file_path + '1612841753983' + file_type)
+            print(excel)
 
         def case_cover():
             path = root_path+'/files/cover'
