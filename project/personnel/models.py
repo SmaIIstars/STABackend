@@ -18,3 +18,4 @@ class Personnel(db.Model):
     pertitle = db.Column(db.String(255))
 
 
+

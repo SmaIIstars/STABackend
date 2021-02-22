@@ -26,9 +26,6 @@ def init_app(app):
     db = SQLAlchemy(app)
 
 
-def add(sql):
-    print(sql)
-
 
 
 
