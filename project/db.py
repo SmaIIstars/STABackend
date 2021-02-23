@@ -12,9 +12,9 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 # A special format for assigning values twice.
-tsql = {
-    'insert': 'INSERT INTO {} ({}) VALUES {{}}'
-}
+# tsql = {
+#     'insert': 'INSERT INTO {} ({}) VALUES {{}}'
+# }
 
 file_type_switcher = {
     'personnel': list(map(lambda item: 'per'+item, ['id', 'name', 'degree', 'eb', 'title']))
