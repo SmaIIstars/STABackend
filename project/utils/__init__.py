@@ -25,3 +25,8 @@ from_email = {
     "host": 'smtp.qq.com'
 }
 
+author = {
+    0: 'guest',
+    1: 'admin',
+    2: 'superAdmin'
+}
