@@ -17,5 +17,11 @@ class Personnel(db.Model):
     pereb = db.Column(db.String(255))
     pertitle = db.Column(db.String(255))
 
+    def __init__(self, perid, pername, perdegree, pereb, pertitle):
+        self.perid = perid
+        self.pername = pername
+        self.perdegree = perdegree
+        self.pereb = pereb
+        self.pertitle = pertitle
 
 

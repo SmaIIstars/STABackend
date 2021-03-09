@@ -17,6 +17,7 @@ def add_resources(api):
     api.add_resource(GetList, '/getlist')
     api.add_resource(Update, '/change')
     api.add_resource(Delete, '/delete')
+    api.add_resource(Add, '/add')
 
 
 def register_blueprints(app):

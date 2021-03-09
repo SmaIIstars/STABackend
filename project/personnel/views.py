@@ -16,7 +16,7 @@ from ..db import db, file_type_switcher
 
 
 personnel_fields = {
-    'id': fields.String(attribute='perid'),
+    'perid': fields.String(),
     'name': fields.String(attribute='pername'),
     'degree': fields.String(attribute='perdegree'),
     'EB': fields.String(attribute='pereb'),
@@ -48,8 +48,8 @@ class Update(Resource):
 
         try:
             user, info = data['user'], data['info']
-            key = info['id']
-            del info['id']
+            key = info['perid']
+            del info['perid']
             item_keys = file_type_switcher['personnel'][1:]
             info = dict(zip(item_keys, info.values()))
             # print(info)
@@ -79,8 +79,8 @@ class Delete(Resource):
 
         try:
             user, info = data['user'], data['info']
-            key = info['id']
-            del info['id']
+            key = info['perid']
+            del info['perid']
             # print(info)
             from ..utils.authority import valid_authority
             res_valid_authority = valid_authority(user['authority'], 'admin')
@@ -102,4 +102,30 @@ class Delete(Resource):
         }
 
 
+class Add(Resource):
+    def post(self):
+        data = json.loads(request.get_data())
+
+        try:
+            user, info = data['user'], data['info']
+            perid, name, degree, EB, title = info.values()
+            from ..utils.authority import valid_authority
+            res_valid_authority = valid_authority(user['authority'], 'admin')
+            if res_valid_authority['code'] == 1201:
+                return res_valid_authority
+
+            personnel = Personnel(perid, name, degree, EB, title)
+            db.session.add(personnel)
+            db.session.commit()
+
+        except BaseException as e:
+            return {
+                'code': 1201,
+                'message': '{}: {}'.format(custom_status_code[1201], str(e)),
+            }
+
+        return {
+            'code': 1200,
+            'message': 'Add: {}'.format(custom_status_code[1200])
+        }
 
