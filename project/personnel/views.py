@@ -38,7 +38,7 @@ class GetList(Resource):
         data = marshal(data, personnel_fields)
         return {
             'data': data,
-            'message': 'personnel'
+            'message': 'personnel List'
         }
 
 

@@ -7,7 +7,6 @@
 # @software: PyCharm
 # @file: __init__.py.py
 # @time: 2021/1/13 15:52
-
 from flask import Blueprint
 personnel_bp = Blueprint('personnel', __name__)
 

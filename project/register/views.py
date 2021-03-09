@@ -9,7 +9,7 @@
 # @time: 2021/1/24 17:22
 from flask_restful import Resource, fields
 from flask import request
-from ..login.models import User
+from ..user.models import User
 from ..db import db
 from ..utils import authority
 

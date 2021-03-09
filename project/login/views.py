@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource, fields, marshal
-from .models import User
+from ..user.models import User
 import json
 from ..utils import custom_status_code
 
