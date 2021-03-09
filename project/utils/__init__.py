@@ -9,14 +9,25 @@
 # @time: 2021/1/20 16:34
 custom_status_code = {
     # login & register & captcha
-    1000: 'username or password error',
-    1001: 'login successful',
-    1002: 'valid token successful',
-    1003: 'valid token failed',
-    1004: 'email is registered',
+    1000: 'Login successful',
+    1001: 'Email or password error',
+
+    1002: 'Valid token successful',
+    1003: 'Valid token failed',
+
+    1004: 'Email is registered',
 
     # files
-    1005: 'files error'
+    1100: '',
+    1101: 'files upload error',
+
+    # authority
+    1200: 'Access',
+    1201: 'Access denied',
+
+    # operation
+    1300: 'Operation is successful',
+    1301: 'Operation is failed'
 }
 
 from_email = {
@@ -25,8 +36,8 @@ from_email = {
     "host": 'smtp.qq.com'
 }
 
-author = {
-    0: 'guest',
-    1: 'admin',
-    2: 'superAdmin'
+authority = {
+    'guest': 0,
+    'admin': 1,
+    'superAdmin': 2
 }

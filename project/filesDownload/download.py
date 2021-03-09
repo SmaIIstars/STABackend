@@ -9,6 +9,7 @@
 # @time: 2021/2/3 23:29
 from flask import request, send_from_directory
 from . import excel_template_path
+from ..utils import custom_status_code
 
 
 def routes(app):
@@ -20,8 +21,8 @@ def routes(app):
             return send_from_directory(excel_template_path, filename+'.xlsx')
         except Exception as e:
             return {
-                'message': str(e),
-                'status': 1005
+                'code': 1101,
+                'message': '{}: {}'.format(custom_status_code[1101], str(e))
             }
 
 

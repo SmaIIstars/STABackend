@@ -2,6 +2,7 @@ from flask import request
 from flask_restful import Resource, fields, marshal
 from .models import User
 import json
+from ..utils import custom_status_code
 
 
 class UserView(Resource):
@@ -19,18 +20,18 @@ class UserView(Resource):
         user_object = User.query.filter_by(email=email, upassword=pwd).first()
         if not user_object:
             return {
-                'code': 1000,
-                'message': 'Email or password error'
+                'code': 1001,
+                'message': custom_status_code[1001]
             }
 
         data = marshal(user_object, UserView.user_fields)
-        from ..utils.token import create_token
+        from ..utils.authority import create_token
         token = create_token({'data': data}, 60*24*7)
         data['token'] = token
         return {
-            'code': 1001,
+            'code': 1000,
             'data': data,
-            'message': 'login successful'
+            'message': custom_status_code[1000]
         }
 
 

@@ -14,11 +14,13 @@ from . import personnel_bp
 
 
 def add_resources(api):
-    api.add_resource(PersonnelView, '/personnel')
+    api.add_resource(GetList, '/getlist')
+    api.add_resource(Update, '/change')
+    api.add_resource(Delete, '/delete')
 
 
 def register_blueprints(app):
-    app.register_blueprint(personnel_bp, url_prefix='/data')
+    app.register_blueprint(personnel_bp, url_prefix='/personnel')
 
 
 def init_app(app):

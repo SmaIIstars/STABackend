@@ -7,6 +7,8 @@
 # @software: PyCharm
 # @file: token.py
 # @time: 2021/1/20 14:15
+from . import *
+# JWT
 salt = 'smallstars'
 
 
@@ -34,7 +36,7 @@ def valid_token(request):
     except BaseException:
         return {
             'code': 1003,
-            'error': 'Please login in'
+            'message': '{}: Please login in'.format(custom_status_code[1003])
         }
 
     import jwt
@@ -52,10 +54,34 @@ def valid_token(request):
     if not payload:
         return {
             'code': 1003,
-            'error': error_msg
+            'message': error_msg
         }
     return {
-        'code': 1002
+        'code': 1002,
+        'message': custom_status_code[1002]
+    }
+
+
+def valid_authority(provide, request):
+    switcher = {
+        0: 'guest',
+        1: 'admin',
+        2: 'superAdmin'
+    }
+
+    if str(type(provide)) == "<class 'int'>":
+        provide = switcher[provide]
+    if str(type(request)) == "<class 'int'>":
+        request = switcher[request]
+
+    if authority[provide] < authority[request]:
+        return {
+            'code': 1201,
+            'message': custom_status_code[1201]
+        }
+    return {
+        'code': 1200,
+        'message': custom_status_code[1200]
     }
 
 

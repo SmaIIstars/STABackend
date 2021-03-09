@@ -13,6 +13,8 @@ from ..utils.skills import switch, get_root_path
 from ..db import file_type_switcher, db
 import time
 from ..personnel.models import Personnel
+from ..utils import custom_status_code
+
 
 ITEMS_LEN_LIST = 5
 generate_object_switcher = {
@@ -43,8 +45,8 @@ def routes(app):
         switch(upload_type_switcher, type_name)
 
         return {
-            'message': 'successful',
-            'status': '1000'
+            'code': 1100,
+            'message': custom_status_code[1100]
         }
 
 
@@ -80,8 +82,8 @@ def insert_items(file, type_name, table_name):
         db.session().commit()
     except BaseException as e:
         return {
-            'message': e,
-            'status': '1000'
+            'code': 1101,
+            'message': '{}: {}'.format(custom_status_code[1101], str(e))
         }
 
 
