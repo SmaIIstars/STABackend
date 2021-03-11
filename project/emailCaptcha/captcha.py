@@ -16,7 +16,7 @@ import hashlib
 
 
 def routes(app):
-    @app.route('/data/captcha', methods=['POST'])
+    @app.route('/captcha', methods=['POST'])
     def email_captcha():
         time_stamp = time.time()
         data = json.loads(request.get_data(as_text=True))

@@ -9,19 +9,19 @@
 # @time: 2020/12/21 17:01
 from .views import *
 from flask_restful import Api
-from . import user_bp
+from . import login_bp
 
 
 def add_resources(api):
-    api.add_resource(UserView, '/login')
+    api.add_resource(Login, '/login')
 
 
 def register_blueprints(app):
-    app.register_blueprint(user_bp, url_prefix='/data')
+    app.register_blueprint(login_bp, url_prefix='')
 
 
 def init_app(app):
-    api = Api(user_bp)
+    api = Api(login_bp)
     register_blueprints(app)
     add_resources(api)
 

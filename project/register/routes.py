@@ -13,7 +13,7 @@ from . import register_bp
 
 
 def register_blueprints(app):
-    app.register_blueprint(register_bp, url_prefix='/data')
+    app.register_blueprint(register_bp, url_prefix='')
 
 
 def add_resources(api):

@@ -18,7 +18,7 @@ custom_status_code = {
     1004: 'Email is registered',
 
     # files
-    1100: '',
+    1100: 'files upload successful',
     1101: 'files upload error',
 
     # authority

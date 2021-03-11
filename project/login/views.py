@@ -5,7 +5,7 @@ import json
 from ..utils import custom_status_code
 
 
-class UserView(Resource):
+class Login(Resource):
     user_fields = {
         'authority': fields.String(attribute='uauthority'),
         'username': fields.String(attribute='username')
@@ -24,7 +24,7 @@ class UserView(Resource):
                 'message': custom_status_code[1001]
             }
 
-        data = marshal(user_object, UserView.user_fields)
+        data = marshal(user_object, Login.user_fields)
         from ..utils.authority import create_token
         token = create_token({'data': data}, 60*24*7)
         data['token'] = token
