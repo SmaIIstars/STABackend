@@ -5,27 +5,41 @@
 # @mailbox: smallstars.he@qq.com
 # @site: 
 # @software: PyCharm
-# @file: files.py
-# @time: 2021/1/30 19:48
-from flask import request
-import xlrd
-from ..utils.skills import switch, get_root_path
-from ..db import file_type_switcher, db
+# @file: download.py
+# @time: 2021/2/3 23:29
+from flask import request, send_from_directory
 import time
+import xlrd
+
+from ..utils.skills import switch
+from ..db import file_type_switcher, db
 from ..personnel.models import Personnel
 from ..utils import custom_status_code
+from .constant import EXCEL_TEMPLATE_PATH, ITEMS_LEN_LIST, ROOT_PATH
 
 
-ITEMS_LEN_LIST = 5
+def download(app):
+    @app.route('/files/download', methods=['get'])
+    def files_download():
+        filename = request.args.get('fileName')
+
+        try:
+            return send_from_directory(EXCEL_TEMPLATE_PATH, filename+'.xlsx')
+        except Exception as e:
+            return {
+                'code': 1101,
+                'message': '{}: {}'.format(custom_status_code[1101], str(e))
+            }
+
+
 generate_object_switcher = {
     # The reason of form refer to source code of switch
     'personnel': lambda: lambda keys, values: Personnel(**dict(zip(keys, values))),
     '': ''
 }
-root_path = get_root_path()
 
 
-def routes(app):
+def upload(app):
     @app.route('/files/upload/<type_name>', methods=['POST'])
     def files_upload(type_name):
         file = request.files.get('file')
@@ -52,7 +66,7 @@ def routes(app):
 
 def insert_items(file, type_name, table_name):
     table_items = file_type_switcher[table_name]
-    file_path = root_path + '/files/{}/'.format(type_name)
+    file_path = ROOT_PATH + '/files/{}/'.format(type_name)
     file_name = str(int(time.time()))
     file_type = '.xlsx'
     file.save(file_path + file_name + file_type)
@@ -103,3 +117,5 @@ def delete_all_items(class_name):
             index = 0
 
     db.session().commit()
+
+

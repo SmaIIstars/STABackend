@@ -5,9 +5,14 @@
 # @mailbox: smallstars.he@qq.com
 # @site: 
 # @software: PyCharm
-# @file: models.py
-# @time: 2021/1/24 17:21
+# @file: __init__.py.py
+# @time: 2021/2/3 23:29
 
+
+def init_app(app):
+    from .routes import download, upload
+    download(app)
+    upload(app)
 
 
 

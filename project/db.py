@@ -17,6 +17,7 @@ db = SQLAlchemy()
 # }
 
 file_type_switcher = {
+    'user': ['email', 'username'] + list(map(lambda item: 'u'+item, ['password', 'authority'])),
     'personnel': list(map(lambda item: 'per'+item, ['id', 'name', 'degree', 'eb', 'title']))
 }
 

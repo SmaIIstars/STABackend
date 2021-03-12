@@ -2,13 +2,10 @@ from flask import Flask
 
 
 def routes(app):
-    from . import personnel, emailCaptcha, login, register, filesUpload, filesDownload, user
+    from . import personnel, emailCaptcha, files, user
     personnel.init_app(app)
     emailCaptcha.init_app(app)
-    login.init_app(app)
-    register.init_app(app)
-    filesUpload.init_app(app)
-    filesDownload.init_app(app)
+    files.init_app(app)
     user.init_app(app)
 
 
