@@ -48,6 +48,12 @@ class Update(Resource):
 
         try:
             user, info = data['user'], data['info']
+
+            from ..utils.authority import valid_authority
+            res_valid_authority = valid_authority(user['authority'], 'admin')
+            if res_valid_authority['code'] == 1201:
+                return res_valid_authority
+
             key = info['perid']
             del info['perid']
             item_keys = file_type_switcher['personnel'][1:]

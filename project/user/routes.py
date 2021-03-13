@@ -22,6 +22,7 @@ bp_order = {
 
 def add_resources(apis):
     apis[bp_order['user']].add_resource(GetList, '/getlist')
+    apis[bp_order['user']].add_resource(GetUser, '/getuser')
     apis[bp_order['register']].add_resource(Register, '/register')
     apis[bp_order['login']].add_resource(Login, '/login')
     apis[bp_order['authority']].add_resource(ChageAuthority, '/change')

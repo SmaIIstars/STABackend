@@ -12,25 +12,48 @@ from flask import request
 import json
 
 from .models import User
-from ..utils import custom_status_code
 from ..db import db, file_type_switcher
-from ..utils import authority
+from ..utils import authority, custom_status_code
 
-personnel_fields = {
+user_fields = {
     'email': fields.String(),
     'username': fields.String(attribute='username'),
     'authority': fields.String(attribute='uauthority'),
+}
+
+user_items = {
+    'email': User.email,
+    'username': User.username,
+    'authority': User.uauthority,
 }
 
 
 # user
 class GetList(Resource):
     def get(self):
-        data = User.query.filter(User.uauthority > authority['guest'] ).all()
-        data = marshal(data, personnel_fields)
+        data = User.query.filter(User.uauthority > authority['guest']).all()
+        data = marshal(data, user_fields)
         return {
             'users': data,
-            'message': 'user List'
+            'message': 'get User List'
+        }
+
+
+class GetUser(Resource):
+    def get(self):
+        args = request.args.to_dict()
+        keys, values = list(args.keys()), list(args.values())
+        users = User.query.filter(user_items[keys[0]].contains(values[0])).all()
+
+        # Here is a multi-condition query, not tested. It's a medium serious problem
+        # if len(keys) > 1:
+        #     for key in keys[1:]:
+        #         pass
+
+        users = marshal(users, user_fields)
+        return {
+            'users': users,
+            'message': 'get User'
         }
 
 
@@ -89,17 +112,30 @@ class Login(Resource):
 class ChageAuthority(Resource):
     def post(self):
         data = json.loads(request.get_data(as_text=True))
-        email = data['email']
-        authority = data['authority']
-        # db.session.query(User).filter_by(email=email).update({file_type_switcher['authority']: authority})
+        try:
+            user, info = data['user'], data['info']
+            email, authority = info['email'], info['authority']
 
-        print(file_type_switcher['user'])
+            from ..utils.authority import valid_authority
+            res_valid_authority = valid_authority(user['authority'], 'admin')
+            if res_valid_authority['code'] == 1201:
+                return res_valid_authority
+
+            db.session.query(User).filter_by(email=email).update({'uauthority': authority})
+            # print(file_type_switcher['user'][file_type_switcher['user'].index('uauthority')])
+            db.session.commit()
+
+            return {
+                "code": 1300,
+                "message": custom_status_code[1300]
+            }
+        except BaseException as e:
+            return {
+                'code': 1301,
+                'message': '{}: {}'.format(custom_status_code[1301], str(e)),
+            }
 
 
-
-        return {
-            "data": 1000
-        }
 
 
 
