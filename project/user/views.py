@@ -12,7 +12,7 @@ from flask import request
 import json
 
 from .models import User
-from ..db import db, file_type_switcher
+from ..db import db
 from ..utils import authority, custom_status_code
 
 user_fields = {
@@ -43,7 +43,11 @@ class GetUser(Resource):
     def get(self):
         args = request.args.to_dict()
         keys, values = list(args.keys()), list(args.values())
-        users = User.query.filter(user_items[keys[0]].contains(values[0])).all()
+
+        # default value
+        users = []
+        if len(values) > 0 and values[0] != "":
+            users = User.query.filter(user_items[keys[0]].contains(values[0])).all()
 
         # Here is a multi-condition query, not tested. It's a medium serious problem
         # if len(keys) > 1:
@@ -114,17 +118,23 @@ class ChageAuthority(Resource):
         data = json.loads(request.get_data(as_text=True))
         try:
             user, info = data['user'], data['info']
-            email, authority = info['email'], info['authority']
 
             from ..utils.authority import valid_authority
             res_valid_authority = valid_authority(user['authority'], 'admin')
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            db.session.query(User).filter_by(email=email).update({'uauthority': authority})
-            # print(file_type_switcher['user'][file_type_switcher['user'].index('uauthority')])
-            db.session.commit()
-
+            if isinstance(info, dict):
+                email, authority = info['email'], info['authority']
+                db.session.query(User).filter_by(email=email).update({'uauthority': authority})
+                # print(file_type_switcher['user'][file_type_switcher['user'].index('uauthority')])
+                db.session.commit()
+            elif isinstance(info, list):
+                print(info)
+                for item in info:
+                    email, authority = item['email'], item['authority']
+                    db.session.query(User).filter_by(email=email).update({'uauthority': authority})
+                db.session.commit()
             return {
                 "code": 1300,
                 "message": custom_status_code[1300]
