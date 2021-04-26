@@ -27,7 +27,7 @@ personnel_fields = {
 class GetList(Resource):
     def get(self):
         # get request params
-        # print('token:', request.args.get('token'))
+        # print('token:', request.args)
         # Obtain token and determine the validity
 
         from ..utils.authority import valid_token
@@ -36,17 +36,28 @@ class GetList(Resource):
             return res_valid_token
 
         params = request.args
-        print(params)
-        current_page, page_size = int(params['currentPage']), int(params['pageSize'])
-
-        data = Personnel.query.paginate(page=current_page, per_page=page_size).items
+        # print(params)
+        qtype = params['type']
         total = Personnel.query.count()
-        data = marshal(data, personnel_fields)
-        return {
-            'data': data,
-            'total': total,
-            'message': 'personnel List'
-        }
+
+        if qtype == 'all':
+            data = Personnel.query.all()
+            data = marshal(data, personnel_fields)
+            return {
+                'data': data,
+                'total': total,
+                'message': 'personnel List'
+            }
+        else:
+            current_page, page_size = int(params['currentPage']), int(params['pageSize'])
+
+            data = Personnel.query.paginate(page=current_page, per_page=page_size).items
+            data = marshal(data, personnel_fields)
+            return {
+                'data': data,
+                'total': total,
+                'message': 'personnel List'
+            }
 
 
 class Update(Resource):
