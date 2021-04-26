@@ -123,14 +123,16 @@ class ChageAuthority(Resource):
             res_valid_authority = valid_authority(user['authority'], 'superAdmin')
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
+            # print(user)
+            # print(info)
 
             if isinstance(info, dict):
-                email, new_authority = info['email'], info['newAuthority']
+                email, new_authority = info['email'], info['authority']
                 db.session.query(User).filter_by(email=email).update({'uauthority': new_authority})
                 # print(file_type_switcher['user'][file_type_switcher['user'].index('uauthority')])
                 db.session.commit()
             elif isinstance(info, list):
-                print(info)
+                # print(info)
                 for item in info:
                     email, new_authority = item['email'], item['newAuthority']
                     db.session.query(User).filter_by(email=email).update({'uauthority': new_authority})

@@ -28,10 +28,16 @@ def create_token(payload, timeout=1):
 
 
 def valid_token(request):
+
     try:
-        import json
-        body = json.loads(request.get_data(as_text=True))
-        token = body['token']
+        method = request.method
+        if method == 'GET':
+            pragmas = request.args
+            token = pragmas['token']
+        elif method == 'post':
+            import json
+            body = json.loads(request.get_data(as_text=True))
+            token = body['token']
 
     except BaseException:
         return {
