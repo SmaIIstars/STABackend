@@ -23,11 +23,17 @@ class Project(db.Model):
     propf = db.Column(db.String(255))
     progu = db.Column(db.String(255))
 
-    def __init__(self, perid, pername, perdegree, pereb, pertitle):
-        self.perid = perid
-        self.pername = pername
-        self.perdegree = perdegree
-        self.pereb = pereb
-        self.pertitle = pertitle
+    def __init__(self, proid, proname, proyear, procategory, proheader, promember, prost, proet, prouu, propf, progu):
+        self.proid = proid
+        self.proname = proname
+        self.proyear = proyear
+        self.procategory = procategory
+        self.proheader = proheader
+        self.promember = promember
+        self.prost = prost
+        self.proet = proet
+        self.prouu = prouu
+        self.propf = propf
+        self.progu = progu
 
 

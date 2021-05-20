@@ -24,7 +24,8 @@ file_type_switcher = {
 
     'project': list(map(lambda item: 'pro' + item, ['id', 'name', 'year',
                                                     'category', 'header',
-                                                    'member', 'st', 'et', 'uu'])),
+                                                    'member', 'st', 'et',
+                                                    'uu', 'pf', 'gu'])),
 
     'paper': list(map(lambda item: 'paper'+item, ['id', 'name', 'fa',
                                                   'ca', 'pt', 'pn', 'vp',

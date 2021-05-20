@@ -14,13 +14,32 @@ import json
 from ..utils import custom_status_code
 from ..db import db, file_type_switcher
 
+'''
+proid: "项目编号",
+name: "项目名称",
+year: "年度",
+category: "类别",
+header: "项目负责人",
+member: "项目成员",
+st: "开始时间",
+et: "结束时间",
+uu: "承担单位",
+pf: "项目经费",
+gu: "拨款单位",
+'''
 
 project_fields = {
-    'perid': fields.String(),
-    'name': fields.String(attribute='pername'),
-    'degree': fields.String(attribute='perdegree'),
-    'EB': fields.String(attribute='pereb'),
-    'title': fields.String(attribute='pertitle'),
+    'proid': fields.String(),
+    'name': fields.String(attribute='proname'),
+    'year': fields.String(attribute='proyear'),
+    'category': fields.String(attribute='procategory'),
+    'header': fields.String(attribute='proheader'),
+    'member': fields.String(attribute='promember'),
+    'st': fields.String(attribute='prost'),
+    'et': fields.String(attribute='proet'),
+    'uu': fields.String(attribute='prouu'),
+    'pf': fields.String(attribute='propf'),
+    'gu': fields.String(attribute='progu'),
 }
 
 
@@ -42,11 +61,12 @@ class GetList(Resource):
 
         if qtype == 'all':
             data = Project.query.all()
-            data = marshal(data, personnel_fields)
+            data = marshal(data, project_fields)
+            print('data:', data)
             return {
                 'data': data,
                 'total': total,
-                'message': 'personnel List'
+                'message': 'project List'
             }
         else:
             current_page, page_size = int(params['currentPage']), int(params['pageSize'])
@@ -72,9 +92,9 @@ class Update(Resource):
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            key = info['perid']
-            del info['perid']
-            item_keys = file_type_switcher['personnel'][1:]
+            key = info['proid']
+            del info['proid']
+            item_keys = file_type_switcher['project'][1:]
             info = dict(zip(item_keys, info.values()))
             # print(info)
             from ..utils.authority import valid_authority
@@ -103,15 +123,15 @@ class Delete(Resource):
 
         try:
             user, info = data['user'], data['info']
-            key = info['perid']
-            del info['perid']
+            key = info['proid']
+            del info['proid']
             # print(info)
             from ..utils.authority import valid_authority
             res_valid_authority = valid_authority(user['authority'], 'admin')
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            db.session.query(Project).filter_by(perid=key).delete()
+            db.session.query(Project).filter_by(proid=key).delete()
             db.session.commit()
 
         except BaseException as e:
@@ -132,14 +152,18 @@ class Add(Resource):
 
         try:
             user, info = data['user'], data['info']
-            perid, name, degree, EB, title = info.values()
+            print(info)
+
+            # , degree, EB, title
+            proid, name, year, category, header, member, st, et, uu, pf, gu = info.values()
+
             from ..utils.authority import valid_authority
             res_valid_authority = valid_authority(user['authority'], 'admin')
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            personnel = Project(perid, name, degree, EB, title)
-            db.session.add(personnel)
+            project = Project(proid, name, year, category, header, member, st, et, uu, pf, gu)
+            db.session.add(project)
             db.session.commit()
 
         except BaseException as e:
