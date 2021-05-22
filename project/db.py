@@ -35,8 +35,8 @@ file_type_switcher = {
                                                   'da', 'type', 'ie',
                                                   'apc', 'auc'])),
 
-    'monograph': list(map(lambda item: 'mo' + item, ['isbn', 'name', 'author',
-                                                     'press.', 'dp'])),
+    'monograph': list(map(lambda item: 'mo' + item, ['issn', 'name', 'author',
+                                                     'press', 'dp'])),
 
     'srta': list(map(lambda item: 'sta' + item, ['id', 'name', 'type',
                                                 'winner', 'rt', 'time',

@@ -29,7 +29,7 @@ gu: "拨款单位",
 '''
 
 project_fields = {
-    'proid': fields.String(),
+    'id': fields.String(attribute='proid'),
     'name': fields.String(attribute='proname'),
     'year': fields.String(attribute='proyear'),
     'category': fields.String(attribute='procategory'),
@@ -62,7 +62,6 @@ class GetList(Resource):
         if qtype == 'all':
             data = Project.query.all()
             data = marshal(data, project_fields)
-            print('data:', data)
             return {
                 'data': data,
                 'total': total,
@@ -76,7 +75,7 @@ class GetList(Resource):
             return {
                 'data': data,
                 'total': total,
-                'message': 'personnel List'
+                'message': 'project List'
             }
 
 
@@ -92,8 +91,8 @@ class Update(Resource):
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            key = info['proid']
-            del info['proid']
+            key = info['id']
+            del info['id']
             item_keys = file_type_switcher['project'][1:]
             info = dict(zip(item_keys, info.values()))
             # print(info)
@@ -102,7 +101,7 @@ class Update(Resource):
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            db.session.query(Project).filter_by(perid=key).update(info)
+            db.session.query(Project).filter_by(proid=key).update(info)
             db.session.commit()
 
         except BaseException as e:
@@ -123,8 +122,8 @@ class Delete(Resource):
 
         try:
             user, info = data['user'], data['info']
-            key = info['proid']
-            del info['proid']
+            key = info['id']
+            del info['id']
             # print(info)
             from ..utils.authority import valid_authority
             res_valid_authority = valid_authority(user['authority'], 'admin')
@@ -152,17 +151,14 @@ class Add(Resource):
 
         try:
             user, info = data['user'], data['info']
-            print(info)
-
-            # , degree, EB, title
-            proid, name, year, category, header, member, st, et, uu, pf, gu = info.values()
+            id, name, year, category, header, member, st, et, uu, pf, gu = info.values()
 
             from ..utils.authority import valid_authority
             res_valid_authority = valid_authority(user['authority'], 'admin')
             if res_valid_authority['code'] == 1201:
                 return res_valid_authority
 
-            project = Project(proid, name, year, category, header, member, st, et, uu, pf, gu)
+            project = Project(id, name, year, category, header, member, st, et, uu, pf, gu)
             db.session.add(project)
             db.session.commit()
 

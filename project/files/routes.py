@@ -17,6 +17,11 @@ from ..utils import custom_status_code
 from .constant import EXCEL_TEMPLATE_PATH, ITEMS_LEN_LIST, ROOT_PATH
 from ..personnel.models import Personnel
 from ..project.models import Project
+from ..paper.models import Paper
+from ..patent.models import Patent
+from ..monograph.models import Monograph
+from ..srta.models import SRTA
+from ..meeting.models import Meeting
 
 
 def download(app):
@@ -37,6 +42,11 @@ generate_object_switcher = {
     # The reason of form refer to source code of switch
     'personnel': lambda: lambda keys, values: Personnel(**dict(zip(keys, values))),
     'project': lambda: lambda keys, values: Project(**dict(zip(keys, values))),
+    'paper': lambda: lambda keys, values: Paper(**dict(zip(keys, values))),
+    'patent': lambda: lambda keys, values: Patent(**dict(zip(keys, values))),
+    'monograph': lambda: lambda keys, values: Monograph(**dict(zip(keys, values))),
+    'srta': lambda: lambda keys, values: SRTA(**dict(zip(keys, values))),
+    'meeting': lambda: lambda keys, values: Meeting(**dict(zip(keys, values))),
 }
 
 
@@ -80,11 +90,12 @@ def insert_items(file, type_name, table_name):
     # values = ''
     items_list = []
 
-    print('table_items: {}, '.format(table_items))
+    # print('table_name: {}, table_items: {}'.format(table_name, table_items))
 
     for i in range(1, rows):
         # [table_items] = sheet.row_values(i)
         item = switch(generate_object_switcher, table_name)(table_items, sheet.row_values(i))
+
         items_list.append(item)
         # format of multiple values
         # values += '({}), '.format(', '.join(sheet.row_values(i)))
@@ -108,7 +119,12 @@ def insert_items(file, type_name, table_name):
 def delete_all_items(class_name):
     class_type_switcher = {
         'personnel': Personnel,
-        'project': Project
+        'project': Project,
+        'paper': Paper,
+        'patent': Patent,
+        'monograph': Monograph,
+        'srta': SRTA,
+        'meeting': Meeting,
     }
 
     items_list = switch(class_type_switcher, class_name).query.all()
